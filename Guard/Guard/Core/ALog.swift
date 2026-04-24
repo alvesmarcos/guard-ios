@@ -5,6 +5,8 @@
 //  Created by Lance Mao on 2022/3/22.
 //
 
+import Foundation
+
 open class ALog {
     public static func d(_ type: AnyClass, _ msg: Any...) {
         if Authing.getDebugMode() == true {

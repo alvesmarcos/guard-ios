@@ -5,6 +5,8 @@
 //  Created by Lance Mao on 2021/12/14.
 //
 
+import Foundation
+
 open class UserInfo: NSObject {
     
     @objc public var raw: NSMutableDictionary?

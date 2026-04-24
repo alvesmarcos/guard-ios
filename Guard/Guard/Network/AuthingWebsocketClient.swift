@@ -18,13 +18,13 @@ public class AuthingWebsocketClient: NSObject {
     public func setRetryCount(_ count: Int) {
         retryCount = count
     }
-    
+
     public func initWebSocket(urlString: String, completion: @escaping (Int, String?) -> Void) {
-        self.receiveCallBack = completion
+        receiveCallBack = completion
         self.urlString = urlString
-        self.webSocketConnect(urlString: urlString)
+        webSocketConnect(urlString: urlString)
     }
-    
+
     private func webSocketConnect(urlString: String) {
         guard let url = URL(string: urlString) else {
             ALog.e(AuthingWebsocketClient.self, "Error: can not create URL")
@@ -34,41 +34,41 @@ public class AuthingWebsocketClient: NSObject {
         let request = URLRequest(url: url)
         webSocketTask = urlSession.webSocketTask(with: request)
         webSocketTask.resume()
-        
+
         webSocketTask.receive { result in
             switch result {
-            case .success(let message):
+            case let .success(message):
                 switch message {
-                case .string(let text):
+                case let .string(text):
                     ALog.d(AuthingWebsocketClient.self, text)
                     self.receiveCallBack?(200, text)
-                case .data(let data):
+                case let .data(data):
                     ALog.d(AuthingWebsocketClient.self, "\(data)")
                     self.receiveCallBack?(200, "\(data)")
                 @unknown default:
                     fatalError()
                 }
-            case .failure(let error):
+            case let .failure(error):
                 ALog.e(AuthingWebsocketClient.self, error)
                 self.receiveCallBack?((error as NSError).code, (error as NSError).debugDescription)
             }
         }
-        
-        self.sendPing()
+
+        sendPing()
     }
-    
+
     public func cancel() {
-        self.webSocketTask.cancel(with: .goingAway, reason: nil)
+        webSocketTask.cancel(with: .goingAway, reason: nil)
     }
-    
+
     func sendPing() {
-        self.webSocketTask.sendPing { (error) in
+        webSocketTask.sendPing { error in
             if let error = error {
                 ALog.w(AuthingWebsocketClient.self, "Sending PING failed: \(error)")
                 self.webSocketTask = nil
                 self.webSocketConnect(urlString: self.urlString)
             }
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                 self.sendPing()
             }
@@ -78,15 +78,18 @@ public class AuthingWebsocketClient: NSObject {
 
 @available(iOS 13.0, *)
 extension AuthingWebsocketClient: URLSessionWebSocketDelegate {
-    public func urlSession(_ session: URLSession,
-                           webSocketTask: URLSessionWebSocketTask,
-                           didOpenWithProtocol protocol: String?) {
+    public func urlSession(_: URLSession,
+                           webSocketTask _: URLSessionWebSocketTask,
+                           didOpenWithProtocol _: String?)
+    {
         ALog.d(AuthingWebsocketClient.self, "URLSessionWebSocketTask is connected")
     }
-    public func urlSession(_ session: URLSession,
-                           webSocketTask: URLSessionWebSocketTask,
+
+    public func urlSession(_: URLSession,
+                           webSocketTask _: URLSessionWebSocketTask,
                            didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
-                           reason: Data?) {
+                           reason: Data?)
+    {
         let reasonString: String
         if let reason = reason, let string = String(data: reason, encoding: .utf8) {
             reasonString = string

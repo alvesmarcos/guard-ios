@@ -21,11 +21,15 @@
 
 ## 简介
 
-Authing Guard for iOS
+Authing 在 Apple 平台（macOS / iOS）的无 UI 登录核心。
 
-此仓库包含 Authing 登录 API 及 UI 组件。 
+此仓库以 Swift Package 形式提供 Authing 登录 API（`AuthClient`、`OIDCClient`、`UserManager` 等），
+原仓库中所有基于 UIKit 的 UI 组件（视图控制器、XIB、按钮、动画、资源目录、本地化）均已移除，
+便于在任意宿主框架（AppKit、SwiftUI、UIKit、命令行等）中复用。
 
-如果您想使用第三方登录和生物认证相关功能，请查看: https://github.com/Authing/authing-binary.
+`WebKit` 仍用于内部读取 User-Agent 与 logout 时清理 Cookie，这两套 API 在 macOS 与 iOS 上均可用。
+
+如果您需要原版 iOS UI，请使用上游项目：https://github.com/Authing/guard-ios。
 
 ## 文档
 
