@@ -8,7 +8,6 @@
 import Foundation
 import Security
 
-
 public enum ErrorCode: Int {
     case netWork = 10001
     case config = 10002
@@ -20,26 +19,25 @@ public enum ErrorCode: Int {
 
     public func errorMessage() -> String {
         switch self {
-        case .netWork:
-            return "Network error"
-        case .config:
-            return "Config not found"
-        case .login:
-            return "Login failed"
-        case .jsonParse:
-            return "Json parse failed"
-        case .socialLogin:
-            return "Social login failed"
-        case .socialBinding:
-            return "Social binding failed"
-        case .webView:
-            return "Webview error"
+            case .netWork:
+                "Network error"
+            case .config:
+                "Config not found"
+            case .login:
+                "Login failed"
+            case .jsonParse:
+                "Json parse failed"
+            case .socialLogin:
+                "Social login failed"
+            case .socialBinding:
+                "Social binding failed"
+            case .webView:
+                "Webview error"
         }
     }
 }
 
 public class Util {
-
     public enum PasswordStrength {
         case weak
         case medium
@@ -61,7 +59,7 @@ public class Util {
 
     public static func getDeviceID() -> String {
         let savedUUID = load()
-        if (savedUUID == nil) {
+        if savedUUID == nil {
             let uuid: String = NSUUID().uuidString
             try? save(uuid: uuid)
             return uuid
@@ -75,22 +73,21 @@ public class Util {
             kSecClass: kSecClassGenericPassword,
             kSecAttrService as String: SERVICE_UUID as AnyObject,
             kSecReturnAttributes: true,
-            kSecReturnData: true
+            kSecReturnData: true,
         ] as CFDictionary
 
         var result: AnyObject?
         let status = SecItemCopyMatching(query, &result)
-        if (status != 0) {
+        if status != 0 {
             ALog.e(Util.self, "Try get uuid from keychain operation finished with status: \(status)")
         }
-        if (result == nil) {
+        if result == nil {
             return nil
         }
 
         let dic = result as! NSDictionary
         let uuidData = dic[kSecValueData] as! Data
-        let uuid = String(data: uuidData, encoding: .utf8)!
-        return uuid
+        return String(data: uuidData, encoding: .utf8)!
     }
 
     public static func save(uuid: String) throws {
@@ -98,7 +95,7 @@ public class Util {
         let query = [
             kSecValueData: uuidData!,
             kSecAttrService: SERVICE_UUID,
-            kSecClass: kSecClassGenericPassword
+            kSecClass: kSecClassGenericPassword,
         ] as CFDictionary
 
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -122,13 +119,15 @@ public class Util {
     }
 
     public static func encryptPassword(_ message: String) -> String {
-        let data: Data = Data(base64Encoded: Authing.getPublicKey())!
+        let data = Data(base64Encoded: Authing.getPublicKey())!
 
         var attributes: CFDictionary {
-            return [kSecAttrKeyType         : kSecAttrKeyTypeRSA,
-                    kSecAttrKeyClass        : kSecAttrKeyClassPublic,
-                    kSecAttrKeySizeInBits   : 2048,
-                    kSecReturnPersistentRef : kCFBooleanTrue!] as CFDictionary
+            [
+                kSecAttrKeyType: kSecAttrKeyTypeRSA,
+                kSecAttrKeyClass: kSecAttrKeyClassPublic,
+                kSecAttrKeySizeInBits: 2048,
+                kSecReturnPersistentRef: kCFBooleanTrue!,
+            ] as CFDictionary
         }
 
         var error: Unmanaged<CFError>? = nil
@@ -143,7 +142,8 @@ public class Util {
             .rsaEncryptionPKCS1,
             plain as CFData,
             &error
-        ) as Data? else {
+        ) as Data?
+        else {
             ALog.d(Util.self, error.debugDescription)
             return "error"
         }
@@ -175,19 +175,19 @@ public class Util {
 
     public static func getHost(_ config: Config) -> String {
         if Util.isIp(Authing.getHost()) {
-            return Authing.getHost()
+            Authing.getHost()
         } else {
-            return config.requestHostname ?? "\(config.identifier ?? "core").\(Authing.getHost())"
+            config.requestHostname ?? "\(config.identifier ?? "core").\(Authing.getHost())"
         }
     }
 
     public static func isNull(_ s: String?) -> Bool {
-        return s == nil || s?.count == 0 || s == "null"
+        s == nil || s?.isEmpty == true || s == "null"
     }
 
     public static func randomString(length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return String((0..<length).map{ _ in letters.randomElement()! })
+        return String((0 ..< length).map { _ in letters.randomElement()! })
     }
 
     public static func getQueryStringParameter(url: URL, param: String) -> String? {
@@ -197,18 +197,18 @@ public class Util {
 
     public static func computePasswordSecurityLevel(password: String) -> PasswordStrength {
         let length = password.count
-        if (length < 6) {
+        if length < 6 {
             return .weak
         }
 
         let hasEnglish = Validator.hasEnglish(password)
         let hasNumber = Validator.hasNumber(password)
         let hasSpecialChar = Validator.hasSpecialCharacter(password)
-        if (hasEnglish && hasNumber && hasSpecialChar) {
+        if hasEnglish && hasNumber && hasSpecialChar {
             return .strong
-        } else if ((hasEnglish && hasNumber) ||
-                   (hasEnglish && hasSpecialChar) ||
-                   (hasNumber && hasSpecialChar)) {
+        } else if (hasEnglish && hasNumber) ||
+            (hasEnglish && hasSpecialChar) ||
+            (hasNumber && hasSpecialChar) {
             return .medium
         } else {
             return .weak
@@ -219,12 +219,14 @@ public class Util {
         var base64Encoded = string.replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
         let remainder = base64Encoded.count % 4
         if remainder > 0 {
-            base64Encoded = base64Encoded.padding(toLength: base64Encoded.count + 4 - remainder,
-                                                  withPad: "=",
-                                                  startingAt: 0)
+            base64Encoded = base64Encoded.padding(
+                toLength: base64Encoded.count + 4 - remainder,
+                withPad: "=",
+                startingAt: 0
+            )
         }
 
-        var array:  [UInt8] = []
+        var array: [UInt8] = []
         if let decodedData = Data(base64Encoded: base64Encoded) {
             array = [UInt8](decodedData)
         }

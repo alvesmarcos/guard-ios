@@ -8,15 +8,15 @@
 import Foundation
 
 public class Client: NSObject {
-    var config: Config? = nil
-    
-    public override init() { }
-    
+    var config: Config?
+
+    override public init() { }
+
     public init(_ config: Config?) {
         self.config = config
     }
-    
-    public func getConfig(completion: @escaping(Config?)->Void) {
+
+    public func getConfig(completion: @escaping (Config?) -> Void) {
         var c: Config? = config
         if c == nil {
             c = Authing.sConfig
@@ -26,7 +26,7 @@ public class Client: NSObject {
             completion(nil)
             return
         }
-        
+
         c?.getConfig { configuration in
             completion(configuration)
         }

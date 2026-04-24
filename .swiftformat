@@ -1,0 +1,96 @@
+# Swift version
+--swiftversion 5.9
+
+# Excluded paths
+--exclude \
+    **/Generated, \
+    **/*.generated.swift, \
+    **/*.graphql.swift, \
+    **/*.pb.swift, \
+    **/*.playground, \
+    **/*.stencil, \
+    **/DevelopmentTools/**, \
+    **/LaunchScreen.storyboard, \
+    **/ObjectiveCBridge/**, \
+    **/Resource/Strings/**, \
+    Pods/**, \
+    R.generated.swift, \
+    fastlane/**
+
+# Enabled rules
+--enable blankLineAfterSwitchCase
+--enable braces
+--enable consistentSwitchCaseSpacing
+--enable docComments
+--enable docCommentsBeforeModifiers
+--enable elseOnSameLine
+--enable emptyBraces
+--enable isEmpty
+--enable modifierOrder
+--enable modifiersOnSameLine
+--enable noExplicitOwnership
+--enable preferForLoop
+--enable redundantBreak
+--enable redundantClosure
+--enable redundantInit
+--enable redundantInternal
+--enable redundantOptionalBinding
+--enable redundantVariable
+--enable redundantReturn
+--enable redundantSelf
+--enable redundantTypedThrows
+--enable redundantVoidReturnType
+--enable sortSwitchCases
+--enable wrapAttributes
+--enable wrapFunctionBodies
+--enable wrapPropertyBodies
+
+# Disabled rules
+--disable andOperator
+--disable strongOutlets
+--disable wrapMultilineStatementBraces
+
+# Indentation and spacing
+--indent 4
+--tabwidth 4
+--indentcase true
+--indentstrings false
+--trimwhitespace always
+--xcodeindentation disabled
+--maxwidth 120
+
+# Line wrapping
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--wrapternary before-operators
+--wraptypealiases preserve
+--closingparen balanced
+
+# Self
+--self remove
+
+# Control flow
+--elseposition same-line
+--guardelse next-line
+--semicolons never
+
+# Braces and spacing
+--emptybraces spaced
+--operatorfunc no-space
+
+# Type sugar
+--shortoptionals always
+
+# Comments
+--comments indent
+
+# Style
+--stripunusedargs closure-only
+
+# Attributes
+--typeattributes prev-line
+--funcattributes prev-line
+--storedvarattrs same-line
+--computedvarattrs prev-line
+--complexattrs prev-line

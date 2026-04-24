@@ -10,13 +10,12 @@ import Foundation
 typealias ConfigCompletion = (Config?) -> Void
 
 public class Authing: NSObject {
-
     @objc public static let DEFAULT_PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4xKeUgQ+Aoz7TLfAfs9+paePb5KIofVthEopwrXFkp8OCeocaTHt9ICjTT2QeJh6cZaDaArfZ873GPUn00eOIZ7Ae+TiA2BKHbCvloW3w5Lnqm70iSsUi5Fmu9/2+68GZRH9L7Mlh8cFksCicW2Y2W2uMGKl64GDcIq3au+aqJQIDAQAB"
 
     public typealias AuthCompletion = (Int, String?, UserInfo?) -> Void
-    
-    @objc public static var sConfig: Config? = nil
-    
+
+    @objc public static var sConfig: Config?
+
     public enum NotifyName: String {
         /// wechat notification
         case notify_wechat = "wechatLoginOK"
@@ -24,14 +23,14 @@ public class Authing: NSObject {
         case notify_wecom_register = "WeComRegisterNotificationName"
         /// wecom receive notification
         case notify_wecom_receive = "WeComReceiveNotificationName"
-        ///lark register notification
+        /// lark register notification
         case notify_lark_register = "LarkRegisterNotificationName"
         /// lark receive notification
         case notify_lark_receive = "LarkReceiveNotificationName"
     }
-    
+
     private static var debugMode: Bool = false
-    
+
     private static var sSchema = "https"
     private static var sHost = "authing.cn"
     private static var sWebsocketHost = "wss://openevent.authing.cn"
@@ -40,105 +39,122 @@ public class Authing: NSObject {
     private static var isOnPremises = false
     private static var sPublicKey = DEFAULT_PUBLIC_KEY
     private static var sCurrentUser: UserInfo?
-    
-    @objc public static func start(_ appid: String) {
-                
+
+    @objc
+    public static func start(_ appid: String) {
         sAppId = appid
         sConfig = Config(appId: appid)
     }
-    
-    @objc public static func getAppId() -> String {
-        return sAppId
+
+    @objc
+    public static func getAppId() -> String {
+        sAppId
     }
-    
-    @objc public static func setSchema(schema: String) {
+
+    @objc
+    public static func setSchema(schema: String) {
         sSchema = schema
     }
-    
-    @objc public static func getSchema() -> String {
-        return sSchema
+
+    @objc
+    public static func getSchema() -> String {
+        sSchema
     }
-    
-    @objc public static func setHost(host: String) {
+
+    @objc
+    public static func setHost(host: String) {
         sHost = host
     }
-    
-    @objc public static func getHost() -> String {
-        return sHost
-    }
-    
-    @objc public static func getIsOnPremises() -> Bool {
-        return isOnPremises
+
+    @objc
+    public static func getHost() -> String {
+        sHost
     }
 
-    @objc public static func getPublicKey() -> String {
-        return sPublicKey
+    @objc
+    public static func getIsOnPremises() -> Bool {
+        isOnPremises
     }
 
-    @objc public static func setPushClientId(cid: String?) {
+    @objc
+    public static func getPublicKey() -> String {
+        sPublicKey
+    }
+
+    @objc
+    public static func setPushClientId(cid: String?) {
         pushClientId = cid
     }
-    
-    @objc public static func getPushClientId() -> String? {
-        return pushClientId
+
+    @objc
+    public static func getPushClientId() -> String? {
+        pushClientId
     }
-    
-    @objc public static func setWebsocketHost(websocketHost: String) {
+
+    @objc
+    public static func setWebsocketHost(websocketHost: String) {
         sWebsocketHost = websocketHost
     }
-    
-    @objc public static func getWebsocketHost() -> String {
-        return sWebsocketHost
+
+    @objc
+    public static func getWebsocketHost() -> String {
+        sWebsocketHost
     }
-    
-    @objc public static func setOnPremiseInfo(host: String, publicKey: String = DEFAULT_PUBLIC_KEY) {
+
+    @objc
+    public static func setOnPremiseInfo(host: String, publicKey: String = DEFAULT_PUBLIC_KEY) {
         isOnPremises = true
         sHost = host
         sPublicKey = publicKey
     }
-    
-    @objc public static func setDebugMode(open: Bool) {
+
+    @objc
+    public static func setDebugMode(open: Bool) {
         debugMode = open
     }
-    
-    @objc public static func getDebugMode() -> Bool {
-        return  debugMode
+
+    @objc
+    public static func getDebugMode() -> Bool {
+        debugMode
     }
-    
-    @objc public static func getConfig(completion: @escaping(Config?)->Void) {
+
+    @objc
+    public static func getConfig(completion: @escaping (Config?) -> Void) {
         if let c = sConfig {
             c.getConfig(completion: completion)
         } else {
             completion(nil)
         }
     }
-    
-    @objc public static func getConfigObject() -> Config? {
-        return sConfig
+
+    @objc
+    public static func getConfigObject() -> Config? {
+        sConfig
     }
-    
-    @objc public static func setLanguage(language: String) {
+
+    @objc
+    public static func setLanguage(language: String) {
         Util.langHeader = language
     }
-    
-    
+
 //    @objc public static func setupAlipay(_ appid: String, customScheme: String) {
 //        Alipay.appid = appid
 //        Alipay.customScheme = customScheme
 //    }
-    
-    @objc public static func autoLogin(completion: @escaping(Int, String?, UserInfo?) -> Void) {
+
+    @objc
+    public static func autoLogin(completion: @escaping (Int, String?, UserInfo?) -> Void) {
         sCurrentUser = UserManager.getUser()
         if sCurrentUser == nil {
             completion(ErrorCode.login.rawValue, ErrorCode.login.errorMessage(), nil)
             return
         }
-        
+
         if sCurrentUser?.refreshToken != nil {
             OIDCClient().getNewAccessTokenByRefreshToken(userInfo: sCurrentUser) { code, message, userInfo in
                 if code == 200 {
                     AuthClient().getCurrentUser(user: sCurrentUser) { code, message, userInfo in
-                        if (code != 200) {
+                        if code != 200 {
                             clearUser(code, message, completion)
                         } else {
                             completion(code, message, userInfo)
@@ -149,8 +165,8 @@ public class Authing: NSObject {
                 }
             }
         } else {
-            AuthClient().getCurrentUser(user: sCurrentUser) { code, message, userInfo in
-                if (code != 200) {
+            AuthClient().getCurrentUser(user: sCurrentUser) { code, message, _ in
+                if code != 200 {
                     clearUser(code, message, completion)
                 } else {
                     AuthClient().updateIdToken(completion: completion)
@@ -158,20 +174,27 @@ public class Authing: NSObject {
             }
         }
     }
-    
-    @objc private static func clearUser(_ code: Int, _ message: String?, _ completion: @escaping(Int, String?, UserInfo?) -> Void) {
+
+    @objc
+    private static func clearUser(
+        _ code: Int,
+        _ message: String?,
+        _ completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         UserManager.removeUser()
         sCurrentUser = nil
         completion(code, message, nil)
     }
-    
-    @objc public static func getCurrentUser() -> UserInfo? {
-        return sCurrentUser
+
+    @objc
+    public static func getCurrentUser() -> UserInfo? {
+        sCurrentUser
     }
-    
-    @objc public static func saveUser(_ userInfo: UserInfo?) {
+
+    @objc
+    public static func saveUser(_ userInfo: UserInfo?) {
         sCurrentUser = userInfo
-        // TODO save to user defaults then Core Data
+        // TODO: save to user defaults then Core Data
         UserManager.saveUser(sCurrentUser)
         UserManager.removeUser()
     }

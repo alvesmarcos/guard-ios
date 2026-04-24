@@ -8,14 +8,13 @@
 import Foundation
 
 open class UserManager {
-    
     private static let KEY_USER_TOKEN = "authing_user_token"
     private static let KEY_ACCESS_TOKEN = "authing_access_token"
     private static let KEY_REFRESH_TOKEN = "authing_refresh_token"
     private static let KEY_USER_RPID = "authing_user_rpId"
 
     public static func saveUser(_ userInfo: UserInfo?) {
-        if (userInfo == nil) {
+        if userInfo == nil {
             removeUser()
         } else {
             let defaults = UserDefaults.standard
@@ -29,37 +28,37 @@ open class UserManager {
             defaults.synchronize()
         }
     }
-    
+
     public static func saveRpid(_ userId: String, rpId: String) {
         let defaults = UserDefaults.standard
         defaults.set(rpId, forKey: UserManager.KEY_USER_RPID + Authing.getAppId() + userId)
         defaults.synchronize()
     }
-    
+
     public static func getRpid(_ userId: String) -> String? {
         let defaults = UserDefaults.standard
         let rpId = defaults.string(forKey: UserManager.KEY_USER_RPID + Authing.getAppId() + userId)
-        if (rpId == nil) {
+        if rpId == nil {
             return nil
         }
         return rpId
     }
-    
+
     public static func getUser() -> UserInfo? {
         let defaults = UserDefaults.standard
         let token = defaults.string(forKey: UserManager.KEY_USER_TOKEN)
-        if (token == nil) {
+        if token == nil {
             return nil
         }
-        
-        let userInfo: UserInfo = UserInfo()
+
+        let userInfo = UserInfo()
         userInfo.token = token
         userInfo.raw = userInfo.raw ?? [:]
         userInfo.raw?["access_token"] = defaults.string(forKey: UserManager.KEY_ACCESS_TOKEN)
         userInfo.raw?["refresh_token"] = defaults.string(forKey: UserManager.KEY_REFRESH_TOKEN)
         return userInfo
     }
-    
+
     public static func removeUser() {
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: UserManager.KEY_USER_TOKEN)

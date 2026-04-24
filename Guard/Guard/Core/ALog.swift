@@ -13,32 +13,32 @@ open class ALog {
             print("📘 \(getTimestamp()):\(getTag(type)):\(msg)")
         }
     }
-    
+
     public static func i(_ type: AnyClass, _ msg: Any...) {
         if Authing.getDebugMode() == true {
             print("📗 \(getTimestamp()):\(getTag(type)):\(msg)")
         }
     }
-    
+
     public static func w(_ type: AnyClass, _ msg: Any...) {
         if Authing.getDebugMode() == true {
             print("⚠️ \(getTimestamp()):\(getTag(type)):\(msg)")
         }
     }
-    
+
     public static func e(_ type: AnyClass, _ msg: Any...) {
         if Authing.getDebugMode() == true {
             print("❌ \(getTimestamp()):\(getTag(type)):\(msg)")
         }
     }
-    
+
     private static func getTimestamp() -> String {
         let date = Date()
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         return df.string(from: date)
     }
-    
+
     private static func getTag(_ type: AnyClass) -> String {
         let bundleId = Bundle(for: type).bundleIdentifier ?? ""
         let className = String(describing: type)

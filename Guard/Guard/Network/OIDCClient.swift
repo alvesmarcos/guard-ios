@@ -27,42 +27,158 @@ public class OIDCClient: NSObject {
 
     // MARK: - --------- Register APIs ----------
 
-    public func registerByEmail(email: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        AuthClient().registerByEmail(authData: authRequest, email: email, password: password, context, completion: completion)
+    public func registerByEmail(
+        email: String,
+        password: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        AuthClient().registerByEmail(
+            authData: authRequest,
+            email: email,
+            password: password,
+            context,
+            completion: completion
+        )
     }
 
-    public func registerByEmailCode(email: String, code: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        AuthClient().registerByEmailCode(authData: authRequest, email: email, code: code, context, completion: completion)
+    public func registerByEmailCode(
+        email: String,
+        code: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        AuthClient().registerByEmailCode(
+            authData: authRequest,
+            email: email,
+            code: code,
+            context,
+            completion: completion
+        )
     }
 
-    public func registerByUserName(username: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        AuthClient().registerByUserName(authData: authRequest, username: username, password: password, context, completion: completion)
+    public func registerByUserName(
+        username: String,
+        password: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        AuthClient().registerByUserName(
+            authData: authRequest,
+            username: username,
+            password: password,
+            context,
+            completion: completion
+        )
     }
 
-    public func registerByPhone(phoneCountryCode: String? = nil, phone: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        AuthClient().registerByPhone(authData: authRequest, phoneCountryCode: phoneCountryCode, phone: phone, password: password, context, completion: completion)
+    public func registerByPhone(
+        phoneCountryCode: String? = nil,
+        phone: String,
+        password: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        AuthClient().registerByPhone(
+            authData: authRequest,
+            phoneCountryCode: phoneCountryCode,
+            phone: phone,
+            password: password,
+            context,
+            completion: completion
+        )
     }
 
-    public func registerByPhoneCode(phoneCountryCode: String? = nil, phone: String, code: String, password: String? = nil, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        AuthClient().registerByPhoneCode(authData: authRequest, phoneCountryCode: phoneCountryCode, phone: phone, code: code, password: password, context, completion: completion)
+    public func registerByPhoneCode(
+        phoneCountryCode: String? = nil,
+        phone: String,
+        code: String,
+        password: String? = nil,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        AuthClient().registerByPhoneCode(
+            authData: authRequest,
+            phoneCountryCode: phoneCountryCode,
+            phone: phone,
+            code: code,
+            password: password,
+            context,
+            completion: completion
+        )
     }
 
-    public func registerByExtendedFields(extendedFields: String, account: String, password: String, _: Bool? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        AuthClient().registerByExtendedFields(authData: authRequest, extendedFields: extendedFields, account: account, password: password, completion: completion)
+    public func registerByExtendedFields(
+        extendedFields: String,
+        account: String,
+        password: String,
+        _: Bool? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        AuthClient().registerByExtendedFields(
+            authData: authRequest,
+            extendedFields: extendedFields,
+            account: account,
+            password: password,
+            completion: completion
+        )
     }
 
     // MARK: - --------- Login APIs ----------
 
-    public func loginByAccount(account: String, password: String, _ autoRegister: Bool = false, _ context: String? = nil, _ captchaCode: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        AuthClient().loginByAccount(authData: authRequest, account: account, password: password, autoRegister, context, captchaCode, completion: completion)
+    public func loginByAccount(
+        account: String,
+        password: String,
+        _ autoRegister: Bool = false,
+        _ context: String? = nil,
+        _ captchaCode: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        AuthClient().loginByAccount(
+            authData: authRequest,
+            account: account,
+            password: password,
+            autoRegister,
+            context,
+            captchaCode,
+            completion: completion
+        )
     }
 
-    public func loginByPhoneCode(phoneCountryCode: String? = nil, phone: String, code: String, _ autoRegister: Bool = false, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        AuthClient().loginByPhoneCode(authData: authRequest, phoneCountryCode: phoneCountryCode, phone: phone, code: code, autoRegister, context, completion: completion)
+    public func loginByPhoneCode(
+        phoneCountryCode: String? = nil,
+        phone: String,
+        code: String,
+        _ autoRegister: Bool = false,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        AuthClient().loginByPhoneCode(
+            authData: authRequest,
+            phoneCountryCode: phoneCountryCode,
+            phone: phone,
+            code: code,
+            autoRegister,
+            context,
+            completion: completion
+        )
     }
 
-    public func loginByEmail(email: String, code: String, _ autoRegister: Bool = false, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        AuthClient().loginByEmail(authData: authRequest, email: email, code: code, autoRegister, context, completion: completion)
+    public func loginByEmail(
+        email: String,
+        code: String,
+        _ autoRegister: Bool = false,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        AuthClient().loginByEmail(
+            authData: authRequest,
+            email: email,
+            code: code,
+            autoRegister,
+            context,
+            completion: completion
+        )
     }
 
     public func loginByWechat(_ code: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
@@ -79,13 +195,16 @@ public class OIDCClient: NSObject {
                 let secret = self.authRequest.client_secret
                 var url = "\(Authing.getSchema())://\(Util.getHost(config!))/oidc/auth?"
                 let nonce = "nonce=" + self.authRequest.nonce
-                let scope = "&scope=" + (self.authRequest.scope.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")
+                let scope = "&scope=" +
+                    (self.authRequest.scope.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")
                 let clientId = "&client_id=" + self.authRequest.client_id
                 let redirect = "&redirect_uri=" + self.authRequest.redirect_uri
                 let responseType = "&response_type=" + self.authRequest.response_type
                 let prompt = "&prompt=consent"
                 let state = "&state=" + self.authRequest.state
-                let codeChallenge = (secret == nil ? "&code_challenge=" + self.authRequest.codeChallenge! + "&code_challenge_method=S256" : "")
+                let codeChallenge = (secret == nil
+                    ? "&code_challenge=" + self.authRequest.codeChallenge! + "&code_challenge_method=S256"
+                    : "")
                 url = url + nonce + scope + clientId + redirect + responseType + prompt + state + codeChallenge
 
                 completion(URL(string: url))
@@ -95,7 +214,9 @@ public class OIDCClient: NSObject {
 
     public func authByCode(code: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
         let secret = authRequest.client_secret
-        let secretStr = (secret == nil ? "&code_verifier=" + authRequest.codeVerifier : "&client_secret=" + (secret ?? ""))
+        let secretStr = (secret == nil
+            ? "&code_verifier=" + authRequest.codeVerifier
+            : "&client_secret=" + (secret ?? ""))
 
         let body = "client_id=" + Authing.getAppId()
             + "&grant_type=authorization_code"
@@ -120,7 +241,9 @@ public class OIDCClient: NSObject {
 
     public func authByToken(userInfo: UserInfo?, completion: @escaping (Int, String?, UserInfo?) -> Void) {
         let secret = authRequest.client_secret
-        let secretStr = (secret == nil ? "&code_verifier=" + authRequest.codeVerifier : "&client_secret=" + (secret ?? ""))
+        let secretStr = (secret == nil
+            ? "&code_verifier=" + authRequest.codeVerifier
+            : "&client_secret=" + (secret ?? ""))
 
         let body = "client_id=" + Authing.getAppId()
             + "&grant_type=http://authing.cn/oidc/grant_type/authing_token"
@@ -149,11 +272,16 @@ public class OIDCClient: NSObject {
         }
     }
 
-    public func getNewAccessTokenByRefreshToken(userInfo: UserInfo?, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func getNewAccessTokenByRefreshToken(
+        userInfo: UserInfo?,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let rt = userInfo?.refreshToken ?? ""
 
         let secret = authRequest.client_secret
-        let secretStr = (secret == nil ? "&code_verifier=" + authRequest.codeVerifier : "&client_secret=" + (secret ?? ""))
+        let secretStr = (secret == nil
+            ? "&code_verifier=" + authRequest.codeVerifier
+            : "&client_secret=" + (secret ?? ""))
 
         let body = "client_id="
             + Authing.getAppId()
@@ -170,18 +298,38 @@ public class OIDCClient: NSObject {
         }
     }
 
-    public func request(userInfo: UserInfo?, endPoint: String, method: String, body: String?, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func request(
+        userInfo: UserInfo?,
+        endPoint: String,
+        method: String,
+        body: String?,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         Authing.getConfig { config in
             if config != nil {
                 let urlString = "\(Authing.getSchema())://\(Util.getHost(config!))\(endPoint)"
-                self._request(userInfo: userInfo, config: config, urlString: urlString, method: method, body: body, completion: completion)
+                self._request(
+                    userInfo: userInfo,
+                    config: config,
+                    urlString: urlString,
+                    method: method,
+                    body: body,
+                    completion: completion
+                )
             } else {
                 completion(ErrorCode.config.rawValue, ErrorCode.config.errorMessage(), nil)
             }
         }
     }
 
-    private func _request(userInfo: UserInfo?, config _: Config?, urlString: String, method: String, body: String?, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    private func _request(
+        userInfo: UserInfo?,
+        config _: Config?,
+        urlString: String,
+        method: String,
+        body: String?,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         let url = URL(string: urlString)
         var request = URLRequest(url: url!)
         request.httpMethod = method
@@ -209,7 +357,10 @@ public class OIDCClient: NSObject {
             let statusCode: Int = (httpResponse?.statusCode)!
 
             if data != nil {
-                if statusCode == 200, let jsonData = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) {
+                if statusCode == 200, let jsonData = try? JSONSerialization.jsonObject(
+                    with: data!,
+                    options: .allowFragments
+                ) {
                     completion(statusCode, "", jsonData as? NSDictionary)
                 } else {
                     completion(statusCode, String(decoding: data!, as: UTF8.self), nil)
@@ -224,7 +375,13 @@ public class OIDCClient: NSObject {
 // MARK: - --------- URLSessionTaskDelegate ----------
 
 extension OIDCClient: URLSessionTaskDelegate {
-    public func urlSession(_: URLSession, task _: URLSessionTask, willPerformHTTPRedirection _: HTTPURLResponse, newRequest _: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
+    public func urlSession(
+        _: URLSession,
+        task _: URLSessionTask,
+        willPerformHTTPRedirection _: HTTPURLResponse,
+        newRequest _: URLRequest,
+        completionHandler: @escaping (URLRequest?) -> Void
+    ) {
         completionHandler(nil)
     }
 }

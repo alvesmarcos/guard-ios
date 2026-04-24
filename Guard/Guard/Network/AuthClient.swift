@@ -11,31 +11,92 @@ import WebKit
 public class AuthClient: Client {
     // MARK: - --------- Register APIs ----------
 
-    public func registerByEmail(email: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func registerByEmail(
+        email: String,
+        password: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         registerByEmail(authData: nil, email: email, password: password, context, completion: completion)
     }
 
-    public func registerByEmailCode(email: String, code: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func registerByEmailCode(
+        email: String,
+        code: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         registerByEmailCode(authData: nil, email: email, code: code, context, completion: completion)
     }
 
-    public func registerByUserName(username: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func registerByUserName(
+        username: String,
+        password: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         registerByUserName(authData: nil, username: username, password: password, context, completion: completion)
     }
 
-    public func registerByPhone(phoneCountryCode: String? = nil, phone: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        registerByPhone(authData: nil, phoneCountryCode: phoneCountryCode, phone: phone, password: password, context, completion: completion)
+    public func registerByPhone(
+        phoneCountryCode: String? = nil,
+        phone: String,
+        password: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        registerByPhone(
+            authData: nil,
+            phoneCountryCode: phoneCountryCode,
+            phone: phone,
+            password: password,
+            context,
+            completion: completion
+        )
     }
 
-    public func registerByPhoneCode(phoneCountryCode: String? = nil, phone: String, code: String, password: String? = nil, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        registerByPhoneCode(authData: nil, phoneCountryCode: phoneCountryCode, phone: phone, code: code, password: password, context, completion: completion)
+    public func registerByPhoneCode(
+        phoneCountryCode: String? = nil,
+        phone: String,
+        code: String,
+        password: String? = nil,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        registerByPhoneCode(
+            authData: nil,
+            phoneCountryCode: phoneCountryCode,
+            phone: phone,
+            code: code,
+            password: password,
+            context,
+            completion: completion
+        )
     }
 
-    public func registerByExtendedFields(extendedFields: String, account: String, password: String, _: Bool? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        registerByExtendedFields(authData: nil, extendedFields: extendedFields, account: account, password: password, completion: completion)
+    public func registerByExtendedFields(
+        extendedFields: String,
+        account: String,
+        password: String,
+        _: Bool? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        registerByExtendedFields(
+            authData: nil,
+            extendedFields: extendedFields,
+            account: account,
+            password: password,
+            completion: completion
+        )
     }
 
-    public func registerByEmail(authData: AuthRequest?, email: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func registerByEmail(
+        authData: AuthRequest?,
+        email: String,
+        password: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let encryptedPassword = Util.encryptPassword(password)
         let body: NSMutableDictionary = ["email": email, "password": encryptedPassword, "forceLogin": true]
         if context != nil {
@@ -57,7 +118,13 @@ public class AuthClient: Client {
         }
     }
 
-    public func registerByEmailCode(authData: AuthRequest?, email: String, code: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func registerByEmailCode(
+        authData: AuthRequest?,
+        email: String,
+        code: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let body: NSMutableDictionary = ["email": email, "code": code, "forceLogin": true]
         if context != nil {
             body.setValue(context, forKey: "context")
@@ -78,7 +145,13 @@ public class AuthClient: Client {
         }
     }
 
-    public func registerByUserName(authData: AuthRequest?, username: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func registerByUserName(
+        authData: AuthRequest?,
+        username: String,
+        password: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let encryptedPassword = Util.encryptPassword(password)
         let body: NSMutableDictionary = ["username": username, "password": encryptedPassword, "forceLogin": true]
         if context != nil {
@@ -100,9 +173,18 @@ public class AuthClient: Client {
         }
     }
 
-    public func registerByPhone(authData: AuthRequest?, phoneCountryCode: String? = nil, phone: String, password: String, _: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let body: NSMutableDictionary = ["account": phone,
-                                         "password": Util.encryptPassword(password)]
+    public func registerByPhone(
+        authData: AuthRequest?,
+        phoneCountryCode: String? = nil,
+        phone: String,
+        password: String,
+        _: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        let body: NSMutableDictionary = [
+            "account": phone,
+            "password": Util.encryptPassword(password),
+        ]
         if phoneCountryCode != nil {
             body.setValue(phoneCountryCode, forKey: "phoneCountryCode")
         }
@@ -122,7 +204,15 @@ public class AuthClient: Client {
         }
     }
 
-    public func registerByPhoneCode(authData: AuthRequest?, phoneCountryCode: String? = nil, phone: String, code: String, password: String? = nil, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func registerByPhoneCode(
+        authData: AuthRequest?,
+        phoneCountryCode: String? = nil,
+        phone: String,
+        code: String,
+        password: String? = nil,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let body: NSMutableDictionary = ["phone": phone, "code": code, "forceLogin": true]
         if password != nil {
             body.setValue(Util.encryptPassword(password!), forKey: "password")
@@ -149,9 +239,18 @@ public class AuthClient: Client {
         }
     }
 
-    public func registerByExtendedFields(authData: AuthRequest?, extendedFields: String, account: String, password: String, _: Bool? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let body: NSMutableDictionary = ["account": account,
-                                         "password": Util.encryptPassword(password)]
+    public func registerByExtendedFields(
+        authData: AuthRequest?,
+        extendedFields: String,
+        account: String,
+        password: String,
+        _: Bool? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        let body: NSMutableDictionary = [
+            "account": account,
+            "password": Util.encryptPassword(password),
+        ]
 
         post("/api/v2/register-\(extendedFields)", body) { code, message, data in
             if authData == nil {
@@ -171,21 +270,69 @@ public class AuthClient: Client {
 
     // MARK: - --------- Login APIs ----------
 
-    public func loginByAccount(account: String, password: String, _ autoRegister: Bool = false, _ context: String? = nil, _ captchaCode: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        loginByAccount(authData: nil, account: account, password: password, autoRegister, context, captchaCode, completion: completion)
+    public func loginByAccount(
+        account: String,
+        password: String,
+        _ autoRegister: Bool = false,
+        _ context: String? = nil,
+        _ captchaCode: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        loginByAccount(
+            authData: nil,
+            account: account,
+            password: password,
+            autoRegister,
+            context,
+            captchaCode,
+            completion: completion
+        )
     }
 
-    public func loginByPhoneCode(phoneCountryCode: String? = nil, phone: String, code: String, _ autoRegister: Bool = false, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        loginByPhoneCode(authData: nil, phoneCountryCode: phoneCountryCode, phone: phone, code: code, autoRegister, context, completion: completion)
+    public func loginByPhoneCode(
+        phoneCountryCode: String? = nil,
+        phone: String,
+        code: String,
+        _ autoRegister: Bool = false,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        loginByPhoneCode(
+            authData: nil,
+            phoneCountryCode: phoneCountryCode,
+            phone: phone,
+            code: code,
+            autoRegister,
+            context,
+            completion: completion
+        )
     }
 
-    public func loginByEmail(email: String, code: String, _ autoRegister: Bool = false, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByEmail(
+        email: String,
+        code: String,
+        _ autoRegister: Bool = false,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         loginByEmail(authData: nil, email: email, code: code, autoRegister, context, completion: completion)
     }
 
-    public func loginByAccount(authData: AuthRequest?, account: String, password: String, _ autoRegister: Bool = false, _ context: String? = nil, _ captchaCode: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByAccount(
+        authData: AuthRequest?,
+        account: String,
+        password: String,
+        _ autoRegister: Bool = false,
+        _ context: String? = nil,
+        _ captchaCode: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let encryptedPassword = Util.encryptPassword(password)
-        let body: NSMutableDictionary = ["account": account, "password": encryptedPassword, "autoRegister": autoRegister]
+        let body: NSMutableDictionary = [
+            "account": account,
+            "password": encryptedPassword,
+            "autoRegister": autoRegister,
+        ]
         if context != nil {
             body.setValue(context, forKey: "context")
         }
@@ -208,7 +355,15 @@ public class AuthClient: Client {
         }
     }
 
-    public func loginByPhoneCode(authData: AuthRequest?, phoneCountryCode: String? = nil, phone: String, code: String, _ autoRegister: Bool = false, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByPhoneCode(
+        authData: AuthRequest?,
+        phoneCountryCode: String? = nil,
+        phone: String,
+        code: String,
+        _ autoRegister: Bool = false,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let body: NSMutableDictionary = ["phone": phone, "code": code, "autoRegister": autoRegister]
         if phoneCountryCode != nil {
             body.setValue(phoneCountryCode, forKey: "phoneCountryCode")
@@ -232,7 +387,14 @@ public class AuthClient: Client {
         }
     }
 
-    public func loginByEmail(authData: AuthRequest?, email: String, code: String, _ autoRegister: Bool = false, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByEmail(
+        authData: AuthRequest?,
+        email: String,
+        code: String,
+        _ autoRegister: Bool = false,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let body: NSMutableDictionary = ["email": email, "code": code, "autoRegister": autoRegister]
         if context != nil {
             body.setValue(context, forKey: "context")
@@ -254,7 +416,8 @@ public class AuthClient: Client {
     }
 
 //
-//    public func loginByLDAP(username: String, password: String, completion: @escaping(Int, String?, UserInfo?) -> Void) {
+//    public func loginByLDAP(username: String, password: String, completion: @escaping(Int, String?, UserInfo?) ->
+//    Void) {
 //        let encryptedPassword = Util.encryptPassword(password)
 //        let body: NSDictionary = ["username" : username, "password" : encryptedPassword]
 //        post("/api/v2/login/ldap", body) { code, message, data in
@@ -262,7 +425,8 @@ public class AuthClient: Client {
 //        }
 //    }
 //
-//    public func loginByAD(username: String, password: String, completion: @escaping(Int, String?, UserInfo?) -> Void) {
+//    public func loginByAD(username: String, password: String, completion: @escaping(Int, String?, UserInfo?) -> Void)
+//    {
 //        let encryptedPassword = Util.encryptPassword(password)
 //        let body: NSDictionary = ["username" : username, "password" : encryptedPassword]
 //        post("/api/v2/login/ad", body) { code, message, data in
@@ -298,11 +462,16 @@ public class AuthClient: Client {
             HTTPCookieStorage.shared.cookies?.forEach(HTTPCookieStorage.shared.deleteCookie)
             HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
             DispatchQueue.main.async {
-                WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-                    for record in records {
-                        WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+                WKWebsiteDataStore.default()
+                    .fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+                        for record in records {
+                            WKWebsiteDataStore.default().removeData(
+                                ofTypes: record.dataTypes,
+                                for: [record],
+                                completionHandler: { }
+                            )
+                        }
                     }
-                }
             }
             completion(code, message)
         }
@@ -350,7 +519,10 @@ public class AuthClient: Client {
         }
     }
 
-    public func setCustomUserData(customData: NSDictionary, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func setCustomUserData(
+        customData: NSDictionary,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         let items = NSMutableArray()
         for (key, value) in customData {
             let item = ["definition": key, "value": value]
@@ -362,7 +534,12 @@ public class AuthClient: Client {
         }
     }
 
-    public func resetPasswordByPhone(phone: String, code: String, newPassword: String, completion: @escaping (Int, String?) -> Void) {
+    public func resetPasswordByPhone(
+        phone: String,
+        code: String,
+        newPassword: String,
+        completion: @escaping (Int, String?) -> Void
+    ) {
         let encryptedPassword = Util.encryptPassword(newPassword)
         let body: NSDictionary = ["phone": phone, "code": code, "newPassword": encryptedPassword]
         post("/api/v2/password/reset/sms", body) { code, message, _ in
@@ -370,7 +547,12 @@ public class AuthClient: Client {
         }
     }
 
-    public func resetPasswordByEmail(email: String, code: String, newPassword: String, completion: @escaping (Int, String?) -> Void) {
+    public func resetPasswordByEmail(
+        email: String,
+        code: String,
+        newPassword: String,
+        completion: @escaping (Int, String?) -> Void
+    ) {
         let encryptedPassword = Util.encryptPassword(newPassword)
         let body: NSDictionary = ["email": email, "code": code, "newPassword": encryptedPassword]
         post("/api/v2/password/reset/email", body) { code, message, _ in
@@ -378,7 +560,11 @@ public class AuthClient: Client {
         }
     }
 
-    public func resetPasswordByFirstTimeLoginToken(token: String, password: String, completion: @escaping (Int, String?) -> Void) {
+    public func resetPasswordByFirstTimeLoginToken(
+        token: String,
+        password: String,
+        completion: @escaping (Int, String?) -> Void
+    ) {
         let encryptedPassword = Util.encryptPassword(password)
         let body: NSDictionary = ["token": token, "password": encryptedPassword]
         post("/api/v2/users/password/reset-by-first-login-token", body) { code, message, _ in
@@ -392,7 +578,11 @@ public class AuthClient: Client {
         }
     }
 
-    public func updatePassword(newPassword: String, oldPassword: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func updatePassword(
+        newPassword: String,
+        oldPassword: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let body: NSMutableDictionary = ["newPassword": Util.encryptPassword(newPassword)]
         if oldPassword != nil {
             body.setValue(Util.encryptPassword(oldPassword!), forKey: "oldPassword")
@@ -402,7 +592,12 @@ public class AuthClient: Client {
         }
     }
 
-    public func bindPhone(phoneCountryCode: String? = nil, phone: String, code: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func bindPhone(
+        phoneCountryCode: String? = nil,
+        phone: String,
+        code: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let body: NSMutableDictionary = ["phone": phone, "phoneCode": code]
         if phoneCountryCode != nil {
             body.setValue(phoneCountryCode, forKey: "phoneCountryCode")
@@ -441,7 +636,11 @@ public class AuthClient: Client {
         get("/api/v2/users/me/security-level", completion: completion)
     }
 
-    public func listApplications(page: Int = 1, limit: Int = 10, completion: @escaping (Int, String?, NSArray?) -> Void) {
+    public func listApplications(
+        page: Int = 1,
+        limit: Int = 10,
+        completion: @escaping (Int, String?, NSArray?) -> Void
+    ) {
         get("/api/v2/users/me/applications/allowed?page=\(String(page))&limit=\(String(limit))") { code, message, data in
             if code == 200 {
                 completion(code, message, data?["list"] as? NSArray)
@@ -475,7 +674,11 @@ public class AuthClient: Client {
         }
     }
 
-    public func listAuthorizedResources(namespace: String = "default", resourceType: String? = nil, completion: @escaping (Int, String?, NSArray?) -> Void) {
+    public func listAuthorizedResources(
+        namespace: String = "default",
+        resourceType: String? = nil,
+        completion: @escaping (Int, String?, NSArray?) -> Void
+    ) {
         let body: NSDictionary = ["namespace": namespace]
         if resourceType != nil {
             body.setValue(resourceType!, forKey: "resourceType")
@@ -497,13 +700,28 @@ public class AuthClient: Client {
         }
     }
 
-    public func checkAccount(paramsName: String, paramsValue: String, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func checkAccount(
+        paramsName: String,
+        paramsValue: String,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         get("/api/v2/users/is-user-exists?" + paramsName + "=" + paramsValue, completion: completion)
     }
 
-    public func feedBack(contact: String, type: Int, description: String, images: [String], completion: @escaping (Int, String?) -> Void) {
-        let body: NSMutableDictionary = ["appId": Authing.getAppId(), "phone": contact, "type": type, "description": description]
-        if images.count != 0 {
+    public func feedBack(
+        contact: String,
+        type: Int,
+        description: String,
+        images: [String],
+        completion: @escaping (Int, String?) -> Void
+    ) {
+        let body: NSMutableDictionary = [
+            "appId": Authing.getAppId(),
+            "phone": contact,
+            "type": type,
+            "description": description,
+        ]
+        if !images.isEmpty {
             body.setValue(images, forKey: "images")
         }
         post("/api/v2/feedback", body) { code, message, _ in
@@ -527,7 +745,11 @@ public class AuthClient: Client {
         loginByWechat(authData: nil, code, completion: completion)
     }
 
-    public func loginByWechat(authData: AuthRequest? = nil, _ code: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByWechat(
+        authData: AuthRequest? = nil,
+        _ code: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         getConfig { config in
             guard let conf = config else {
                 completion(ErrorCode.config.rawValue, ErrorCode.config.errorMessage(), nil)
@@ -602,7 +824,9 @@ public class AuthClient: Client {
                 return
             }
 
-            let conId: String? = config?.getConnectionId(type: "lark-internal") == nil ? config?.getConnectionId(type: "lark-public") : config?.getConnectionId(type: "lark-internal")
+            let conId: String? = config?.getConnectionId(type: "lark-internal") == nil
+                ? config?.getConnectionId(type: "lark-public")
+                : config?.getConnectionId(type: "lark-internal")
             guard conId != nil else {
                 completion(ErrorCode.config.rawValue, ErrorCode.config.errorMessage(), nil)
                 return
@@ -707,7 +931,11 @@ public class AuthClient: Client {
         }
     }
 
-    public func loginByMiniprogram(code: String, phoneInfoCode: String?, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByMiniprogram(
+        code: String,
+        phoneInfoCode: String?,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         getConfig { config in
             guard let conf = config else {
                 completion(ErrorCode.config.rawValue, ErrorCode.config.errorMessage(), nil)
@@ -787,7 +1015,10 @@ public class AuthClient: Client {
         }
     }
 
-    public func loginByBaiduByAccessToken(_ accessToken: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByBaiduByAccessToken(
+        _ accessToken: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         getConfig { config in
             guard let conf = config else {
                 completion(ErrorCode.config.rawValue, ErrorCode.config.errorMessage(), nil)
@@ -825,7 +1056,11 @@ public class AuthClient: Client {
         }
     }
 
-    public func loginByDingTalk(_ code: String, _ isSnsCode: Bool = true, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByDingTalk(
+        _ code: String,
+        _ isSnsCode: Bool = true,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         getConfig { config in
             guard let conf = config else {
                 completion(ErrorCode.config.rawValue, ErrorCode.config.errorMessage(), nil)
@@ -977,7 +1212,11 @@ public class AuthClient: Client {
         }
     }
 
-    public func loginByLine(_ accessToken: String, _ idToken: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByLine(
+        _ accessToken: String,
+        _ idToken: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         getConfig { config in
             guard let conf = config else {
                 completion(ErrorCode.config.rawValue, ErrorCode.config.errorMessage(), nil)
@@ -999,7 +1238,12 @@ public class AuthClient: Client {
         }
     }
 
-    public func loginByOneAuth(token: String, accessToken: String, _ netWork: Int? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByOneAuth(
+        token: String,
+        accessToken: String,
+        _ netWork: Int? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let body: NSMutableDictionary = ["token": token, "accessToken": accessToken]
         if netWork != nil {
             body.setValue(netWork, forKey: "netWork")
@@ -1028,7 +1272,11 @@ public class AuthClient: Client {
         }
     }
 
-    public func loginByTwitter(requestToken: String, tokenSecret: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func loginByTwitter(
+        requestToken: String,
+        tokenSecret: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         getConfig { config in
             guard let conf = config else {
                 completion(ErrorCode.config.rawValue, ErrorCode.config.errorMessage(), nil)
@@ -1049,7 +1297,12 @@ public class AuthClient: Client {
 
     // MARK: - --------- Scoial Identity Binding APIs ----------
 
-    public func getDataByWechatlogin(authData: AuthRequest? = nil, code: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func getDataByWechatlogin(
+        authData: AuthRequest? = nil,
+        code: String,
+        _ context: String? = nil,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         getConfig { config in
             guard let conf = config else {
                 completion(ErrorCode.config.rawValue, ErrorCode.config.errorMessage(), nil)
@@ -1089,8 +1342,10 @@ public class AuthClient: Client {
     }
 
     public func bindWechatWithRegister(key: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let body: NSDictionary = ["action": "create-federation-account",
-                                  "key": key]
+        let body: NSDictionary = [
+            "action": "create-federation-account",
+            "key": key,
+        ]
         post("/api/v2/ecConn/wechatMobile/register", body) { code, message, data in
             if code == 200 {
                 if let jsonData = data {
@@ -1106,12 +1361,19 @@ public class AuthClient: Client {
         }
     }
 
-    public func bindWechatByAccount(account: String, password: String, key: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func bindWechatByAccount(
+        account: String,
+        password: String,
+        key: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let encryptedPassword = Util.encryptPassword(password)
-        let body: NSDictionary = ["action": "bind-identity-by-password",
-                                  "account": account,
-                                  "password": encryptedPassword,
-                                  "key": key]
+        let body: NSDictionary = [
+            "action": "bind-identity-by-password",
+            "account": account,
+            "password": encryptedPassword,
+            "key": key,
+        ]
         post("/api/v2/ecConn/wechatMobile/byAccount", body) { code, message, data in
             if code == 200 {
                 if let jsonData = data {
@@ -1127,11 +1389,19 @@ public class AuthClient: Client {
         }
     }
 
-    public func bindWechatByPhoneCode(phoneCountryCode: String? = nil, phone: String, code: String, key: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let body: NSMutableDictionary = ["action": "bind-identity-by-phone-code",
-                                         "phone": phone,
-                                         "code": code,
-                                         "key": key]
+    public func bindWechatByPhoneCode(
+        phoneCountryCode: String? = nil,
+        phone: String,
+        code: String,
+        key: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        let body: NSMutableDictionary = [
+            "action": "bind-identity-by-phone-code",
+            "phone": phone,
+            "code": code,
+            "key": key,
+        ]
         if phoneCountryCode != nil {
             body.setValue(phoneCountryCode, forKey: "phoneCountryCode")
         }
@@ -1150,11 +1420,18 @@ public class AuthClient: Client {
         }
     }
 
-    public func bindWechatByEmailCode(email: String, code: String, key: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let body: NSMutableDictionary = ["action": "bind-identity-by-email-code",
-                                         "email": email,
-                                         "code": code,
-                                         "key": key]
+    public func bindWechatByEmailCode(
+        email: String,
+        code: String,
+        key: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        let body: NSMutableDictionary = [
+            "action": "bind-identity-by-email-code",
+            "email": email,
+            "code": code,
+            "key": key,
+        ]
 
         post("/api/v2/ecConn/wechatMobile/byEmailCode", body) { code, message, data in
             if code == 200 {
@@ -1171,10 +1448,16 @@ public class AuthClient: Client {
         }
     }
 
-    public func bindWechatBySelectedAccountId(accountId: String, key: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let body: NSMutableDictionary = ["action": "bind-identity-by-selection",
-                                         "accountId": accountId,
-                                         "key": key]
+    public func bindWechatBySelectedAccountId(
+        accountId: String,
+        key: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        let body: NSMutableDictionary = [
+            "action": "bind-identity-by-selection",
+            "accountId": accountId,
+            "key": key,
+        ]
 
         post("/api/v2/ecConn/wechatMobile/select", body) { code, message, data in
             if code == 200 {
@@ -1191,10 +1474,16 @@ public class AuthClient: Client {
         }
     }
 
-    public func bindWechatByAccountId(accountId: String, key: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let body: NSMutableDictionary = ["action": "bind-identity-by-account-id",
-                                         "accountId": accountId,
-                                         "key": key]
+    public func bindWechatByAccountId(
+        accountId: String,
+        key: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
+        let body: NSMutableDictionary = [
+            "action": "bind-identity-by-account-id",
+            "accountId": accountId,
+            "key": key,
+        ]
 
         post("/api/v2/ecConn/wechatMobile/byAccountId", body) { code, message, data in
             if code == 200 {
@@ -1267,7 +1556,11 @@ public class AuthClient: Client {
         }
     }
 
-    public func mfaAssociateByFace(photoKeyA: String, photoKeyB: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func mfaAssociateByFace(
+        photoKeyA: String,
+        photoKeyB: String,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let body: NSDictionary = ["photoA": photoKeyA, "photoB": photoKeyB, "isExternalPhoto": false]
         post("/api/v2/mfa/face/associate", body) { code, message, data in
             self.createUserInfo(code, message, data, completion: completion)
@@ -1307,11 +1600,19 @@ public class AuthClient: Client {
         post("/api/v2/qrcode/cancel", ["random": ticket], completion: completion)
     }
 
-    public func loginByQRCode(qrcodeId: String, action: String = "APP_LOGIN", completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func loginByQRCode(
+        qrcodeId: String,
+        action: String = "APP_LOGIN",
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         post("/api/v3/qrcode-app-login", ["qrcodeId": qrcodeId, "action": action], completion: completion)
     }
 
-    public func loginByPushNotification(pushCodeId: String, action: String, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func loginByPushNotification(
+        pushCodeId: String,
+        action: String,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         post("/api/v3/change-pushcode-status", ["pushCodeId": pushCodeId, "action": action], completion: completion)
     }
 
@@ -1328,13 +1629,15 @@ public class AuthClient: Client {
             deviceType = "Mobile"
         #endif
 
-        let body: NSMutableDictionary = ["deviceUniqueId": Util.getDeviceID(),
-                                         "type": deviceType,
-                                         "name": ProcessInfo.processInfo.hostName,
-                                         "mod": Util.machineModel(),
-                                         "version": ProcessInfo.processInfo.operatingSystemVersionString,
-                                         "producer": "apple",
-                                         "os": osName]
+        let body: NSMutableDictionary = [
+            "deviceUniqueId": Util.getDeviceID(),
+            "type": deviceType,
+            "name": ProcessInfo.processInfo.hostName,
+            "mod": Util.machineModel(),
+            "version": ProcessInfo.processInfo.operatingSystemVersionString,
+            "producer": "apple",
+            "os": osName,
+        ]
         if customData != nil {
             body.setValue(customData, forKey: "customData")
         }
@@ -1367,21 +1670,28 @@ public class AuthClient: Client {
         get("/api/v3/webauthn/registration", completion: completion)
     }
 
-    public func webauthnRegistration(ticket: String,
-                                     credentialId: String,
-                                     rawId: String,
-                                     attestationObject: String,
-                                     clientDataJSON: String,
-                                     authenticatorCode: String,
-                                     completion: @escaping (Int, String?, NSDictionary?) -> Void)
-    {
-        let body: NSDictionary = ["ticket": ticket,
-                                  "registrationCredential": ["id": credentialId,
-                                                             "rawId": rawId,
-                                                             "response": ["attestationObject": attestationObject,
-                                                                          "clientDataJSON": clientDataJSON],
-                                                             "type": "public-key"] as [String: Any],
-                                  "authenticatorCode": authenticatorCode]
+    public func webauthnRegistration(
+        ticket: String,
+        credentialId: String,
+        rawId: String,
+        attestationObject: String,
+        clientDataJSON: String,
+        authenticatorCode: String,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
+        let body: NSDictionary = [
+            "ticket": ticket,
+            "registrationCredential": [
+                "id": credentialId,
+                "rawId": rawId,
+                "response": [
+                    "attestationObject": attestationObject,
+                    "clientDataJSON": clientDataJSON,
+                ],
+                "type": "public-key",
+            ] as [String: Any],
+            "authenticatorCode": authenticatorCode,
+        ]
 
         post("/api/v3/webauthn/registration", body, completion: completion)
     }
@@ -1390,43 +1700,72 @@ public class AuthClient: Client {
         get("/api/v3/webauthn/authentication", completion: completion)
     }
 
-    public func webauthnAuthentication(ticket: String,
-                                       credentialId: String,
-                                       rawId: String,
-                                       authenticatorData: String,
-                                       userHandle: String,
-                                       clientDataJSON: String,
-                                       signature: String,
-                                       completion: @escaping (Int, String?, NSDictionary?) -> Void)
-    {
-        let body: NSDictionary = ["ticket": ticket,
-                                  "authenticationCredential": ["id": credentialId,
-                                                               "rawId": rawId,
-                                                               "response": ["authenticatorData": authenticatorData,
-                                                                            "userHandle": userHandle,
-                                                                            "clientDataJSON": clientDataJSON,
-                                                                            "signature": signature],
-                                                               "type": "public-key"] as [String: Any]]
+    public func webauthnAuthentication(
+        ticket: String,
+        credentialId: String,
+        rawId: String,
+        authenticatorData: String,
+        userHandle: String,
+        clientDataJSON: String,
+        signature: String,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
+        let body: NSDictionary = [
+            "ticket": ticket,
+            "authenticationCredential": [
+                "id": credentialId,
+                "rawId": rawId,
+                "response": [
+                    "authenticatorData": authenticatorData,
+                    "userHandle": userHandle,
+                    "clientDataJSON": clientDataJSON,
+                    "signature": signature,
+                ],
+                "type": "public-key",
+            ] as [String: Any],
+        ]
 
         post("/api/v3/webauthn/authentication", body, completion: completion)
     }
 
-    public func webauthnRemoveCredential(credentialID: String, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func webauthnRemoveCredential(
+        credentialID: String,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         post("/api/v3/webauthn/remove-credential/\(credentialID)", [:], completion: completion)
     }
 
-    public func webauthnAuthenticatorDevice(authenticatorCode: String, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
-        post("/api/v3/webauthn/page-authenticator-device", ["authenticatorCode": authenticatorCode], completion: completion)
+    public func webauthnAuthenticatorDevice(
+        authenticatorCode: String,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
+        post(
+            "/api/v3/webauthn/page-authenticator-device",
+            ["authenticatorCode": authenticatorCode],
+            completion: completion
+        )
     }
 
-    public func checkWebauthnVaildCredentitals(credentialIds: [String], authenticatorCode: String, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
-        post("/api/v3/webauthn/check-valid-credentials-by-credIds", ["credentialIds": credentialIds, "authenticatorCode": authenticatorCode], completion: completion)
+    public func checkWebauthnVaildCredentitals(
+        credentialIds: [String],
+        authenticatorCode: String,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
+        post(
+            "/api/v3/webauthn/check-valid-credentials-by-credIds",
+            ["credentialIds": credentialIds, "authenticatorCode": authenticatorCode],
+            completion: completion
+        )
     }
 
     // MARK: - --------- subEvent ----------
 
     @available(iOS 13.0, *)
-    public func subEvent(eventCode: String, _ accessToken: String? = nil, completion: @escaping (Int, String?) -> Void) {
+    public func subEvent(
+        eventCode: String,
+        _ accessToken: String? = nil,
+        completion: @escaping (Int, String?) -> Void
+    ) {
         var token = accessToken
         if token == nil {
             token = Authing.getCurrentUser()?.accessToken
@@ -1439,7 +1778,11 @@ public class AuthClient: Client {
 
     // MARK: - --------- pubEvent ----------
 
-    public func pubEvent(eventType: String, eventData: NSDictionary, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func pubEvent(
+        eventType: String,
+        eventData: NSDictionary,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         guard let data = try? JSONSerialization.data(withJSONObject: eventData, options: []) else {
             ALog.d(AuthClient.self, "eventData is not json when requesting pubEvent")
             completion(ErrorCode.jsonParse.rawValue, ErrorCode.jsonParse.errorMessage(), nil)
@@ -1457,11 +1800,22 @@ public class AuthClient: Client {
 
     // MARK: - --------- Util APIs ----------
 
-    public func createUserInfo(_ code: Int, _ message: String?, _ data: NSDictionary?, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func createUserInfo(
+        _ code: Int,
+        _ message: String?,
+        _ data: NSDictionary?,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         createUserInfo(nil, code, message, data, completion: completion)
     }
 
-    public func createUserInfo(_ user: UserInfo?, _ code: Int, _ message: String?, _ data: NSDictionary?, completion: @escaping (Int, String?, UserInfo?) -> Void) {
+    public func createUserInfo(
+        _ user: UserInfo?,
+        _ code: Int,
+        _ message: String?,
+        _ data: NSDictionary?,
+        completion: @escaping (Int, String?, UserInfo?) -> Void
+    ) {
         let userInfo = user ?? UserInfo()
         if code == 200 {
             userInfo.parse(data: data)
@@ -1487,8 +1841,7 @@ public class AuthClient: Client {
             completion(code, message, userInfo)
         } else if code == Const.EC_BINDING_CREATE_ACCOUNT ||
             code == Const.EC_ONLY_BINDING_ACCOUNT ||
-            code == Const.EC_MULTIPLE_ACCOUNT
-        {
+            code == Const.EC_MULTIPLE_ACCOUNT {
             userInfo.socialBindingData = data
             completion(code, message, userInfo)
         } else {
@@ -1500,15 +1853,28 @@ public class AuthClient: Client {
         request(endPoint: endPoint, method: "GET", body: nil, completion: completion)
     }
 
-    public func post(_ endPoint: String, _ body: NSDictionary?, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func post(
+        _ endPoint: String,
+        _ body: NSDictionary?,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         request(endPoint: endPoint, method: "POST", body: body, completion: completion)
     }
 
-    public func delete(_ endPoint: String, _ body: NSDictionary? = nil, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func delete(
+        _ endPoint: String,
+        _ body: NSDictionary? = nil,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         request(endPoint: endPoint, method: "DELETE", body: body, completion: completion)
     }
 
-    private func request(endPoint: String, method: String, body: NSDictionary?, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    private func request(
+        endPoint: String,
+        method: String,
+        body: NSDictionary?,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         getConfig { config in
             if config != nil {
                 let urlString = "\(Authing.getSchema())://\(Util.getHost(config!))\(endPoint)"
@@ -1560,13 +1926,24 @@ public class AuthClient: Client {
         return request
     }
 
-    public func request(config: Config?, urlString: String, method: String, body: NSDictionary?, completion: @escaping (Int, String?, NSDictionary?) -> Void) {
+    public func request(
+        config: Config?,
+        urlString: String,
+        method: String,
+        body: NSDictionary?,
+        completion: @escaping (Int, String?, NSDictionary?) -> Void
+    ) {
         let session = URLSession.shared
         if body?.object(forKey: "captchaCode") != nil, let url = URL(string: urlString) {
             session.configuration.httpCookieStorage?.setCookies(Util.cookies, for: url, mainDocumentURL: url)
         }
 
-        session.dataTask(with: request(config: config, urlString: urlString, method: method, body: body)) { data, response, error in
+        session.dataTask(with: request(
+            config: config,
+            urlString: urlString,
+            method: method,
+            body: body
+        )) { data, response, error in
             guard error == nil else {
                 ALog.d(AuthClient.self, "Guardian request network error:\(error!.localizedDescription)")
                 completion(ErrorCode.netWork.rawValue, ErrorCode.netWork.errorMessage(), nil)
@@ -1585,21 +1962,29 @@ public class AuthClient: Client {
 
                 // some API e.g. getCustomUserData returns json array
                 if statusCode == 200 || statusCode == 201 {
-                    if let jsonArray = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSArray {
+                    if let jsonArray = try JSONSerialization.jsonObject(
+                        with: data!,
+                        options: .mutableContainers
+                    ) as? NSArray {
                         let res: NSDictionary = ["result": jsonArray]
                         completion(200, "", res)
                         return
                     }
                 }
 
-                guard let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? NSDictionary else {
+                guard let json = try JSONSerialization
+                    .jsonObject(with: data!, options: .mutableContainers) as? NSDictionary
+                else {
                     ALog.d(AuthClient.self, "data is not json when requesting \(urlString)")
                     completion(ErrorCode.jsonParse.rawValue, ErrorCode.jsonParse.errorMessage(), nil)
                     return
                 }
 
                 guard statusCode == 200 || statusCode == 201 else {
-                    ALog.d(AuthClient.self, "Guardian request network error. Status code:\(statusCode.description). url:\(urlString)")
+                    ALog.d(
+                        AuthClient.self,
+                        "Guardian request network error. Status code:\(statusCode.description). url:\(urlString)"
+                    )
                     let message: String? = json["message"] as? String
                     completion(statusCode, message ?? "Network Error", json)
                     return
@@ -1629,8 +2014,19 @@ public class AuthClient: Client {
         }.resume()
     }
 
-    private func request(config: Config?, urlString: String, method: String, body: NSDictionary?, completion: @escaping (Int, String?, Data?) -> Void) {
-        URLSession.shared.dataTask(with: request(config: config, urlString: urlString, method: method, body: body)) { data, response, error in
+    private func request(
+        config: Config?,
+        urlString: String,
+        method: String,
+        body: NSDictionary?,
+        completion: @escaping (Int, String?, Data?) -> Void
+    ) {
+        URLSession.shared.dataTask(with: request(
+            config: config,
+            urlString: urlString,
+            method: method,
+            body: body
+        )) { data, response, error in
             guard error == nil else {
                 ALog.d(AuthClient.self, "Guardian request network error:\(error!.localizedDescription)")
                 completion(ErrorCode.netWork.rawValue, ErrorCode.netWork.errorMessage(), nil)
@@ -1656,7 +2052,10 @@ public class AuthClient: Client {
                 if statusCode == 200 || statusCode == 201 {
                     return completion(200, "", data)
                 } else {
-                    ALog.d(AuthClient.self, "Guardian request network error. Status code:\(statusCode.description). url:\(urlString)")
+                    ALog.d(
+                        AuthClient.self,
+                        "Guardian request network error. Status code:\(statusCode.description). url:\(urlString)"
+                    )
                     completion(statusCode, "Network Error", nil)
                 }
             }

@@ -37,20 +37,23 @@ public class AuthingWebsocketClient: NSObject {
 
         webSocketTask.receive { result in
             switch result {
-            case let .success(message):
-                switch message {
-                case let .string(text):
-                    ALog.d(AuthingWebsocketClient.self, text)
-                    self.receiveCallBack?(200, text)
-                case let .data(data):
-                    ALog.d(AuthingWebsocketClient.self, "\(data)")
-                    self.receiveCallBack?(200, "\(data)")
-                @unknown default:
-                    fatalError()
-                }
-            case let .failure(error):
-                ALog.e(AuthingWebsocketClient.self, error)
-                self.receiveCallBack?((error as NSError).code, (error as NSError).debugDescription)
+                case let .success(message):
+                    switch message {
+                        case let .string(text):
+                            ALog.d(AuthingWebsocketClient.self, text)
+                            self.receiveCallBack?(200, text)
+
+                        case let .data(data):
+                            ALog.d(AuthingWebsocketClient.self, "\(data)")
+                            self.receiveCallBack?(200, "\(data)")
+
+                        @unknown default:
+                            fatalError()
+                    }
+
+                case let .failure(error):
+                    ALog.e(AuthingWebsocketClient.self, error)
+                    self.receiveCallBack?((error as NSError).code, (error as NSError).debugDescription)
             }
         }
 
@@ -63,7 +66,7 @@ public class AuthingWebsocketClient: NSObject {
 
     func sendPing() {
         webSocketTask.sendPing { error in
-            if let error = error {
+            if let error {
                 ALog.w(AuthingWebsocketClient.self, "Sending PING failed: \(error)")
                 self.webSocketTask = nil
                 self.webSocketConnect(urlString: self.urlString)
@@ -78,24 +81,28 @@ public class AuthingWebsocketClient: NSObject {
 
 @available(iOS 13.0, *)
 extension AuthingWebsocketClient: URLSessionWebSocketDelegate {
-    public func urlSession(_: URLSession,
-                           webSocketTask _: URLSessionWebSocketTask,
-                           didOpenWithProtocol _: String?)
-    {
+    public func urlSession(
+        _: URLSession,
+        webSocketTask _: URLSessionWebSocketTask,
+        didOpenWithProtocol _: String?
+    ) {
         ALog.d(AuthingWebsocketClient.self, "URLSessionWebSocketTask is connected")
     }
 
-    public func urlSession(_: URLSession,
-                           webSocketTask _: URLSessionWebSocketTask,
-                           didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
-                           reason: Data?)
-    {
-        let reasonString: String
-        if let reason = reason, let string = String(data: reason, encoding: .utf8) {
-            reasonString = string
+    public func urlSession(
+        _: URLSession,
+        webSocketTask _: URLSessionWebSocketTask,
+        didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
+        reason: Data?
+    ) {
+        let reasonString: String = if let reason, let string = String(data: reason, encoding: .utf8) {
+            string
         } else {
-            reasonString = ""
+            ""
         }
-        ALog.e(AuthingWebsocketClient.self, "URLSessionWebSocketTask is closed: code=\(closeCode), reason=\(reasonString)")
+        ALog.e(
+            AuthingWebsocketClient.self,
+            "URLSessionWebSocketTask is closed: code=\(closeCode), reason=\(reasonString)"
+        )
     }
 }
