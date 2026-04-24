@@ -121,6 +121,35 @@ public class Util {
         SecItemDelete(query)
     }
 
+    public static func encryptPassword(_ message: String) -> String {
+        let data: Data = Data(base64Encoded: Authing.getPublicKey())!
+
+        var attributes: CFDictionary {
+            return [kSecAttrKeyType         : kSecAttrKeyTypeRSA,
+                    kSecAttrKeyClass        : kSecAttrKeyClassPublic,
+                    kSecAttrKeySizeInBits   : 2048,
+                    kSecReturnPersistentRef : kCFBooleanTrue!] as CFDictionary
+        }
+
+        var error: Unmanaged<CFError>? = nil
+        guard let secKey = SecKeyCreateWithData(data as CFData, attributes, &error) else {
+            ALog.d(Util.self, error.debugDescription)
+            return "error"
+        }
+
+        let plain = Data(message.utf8)
+        guard let encrypted = SecKeyCreateEncryptedData(
+            secKey,
+            .rsaEncryptionPKCS1,
+            plain as CFData,
+            &error
+        ) as Data? else {
+            ALog.d(Util.self, error.debugDescription)
+            return "error"
+        }
+        return encrypted.base64EncodedString()
+    }
+
     public static func getLangHeader() -> String {
         var language = Locale.current.identifier
 

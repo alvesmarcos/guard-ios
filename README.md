@@ -37,7 +37,7 @@ project: https://github.com/Authing/guard-ios.
 Add the package to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/alvesmarcos/guard-ios.git", from: "2.1.0")
+.package(url: "https://github.com/alvesmarcos/guard-ios.git", from: "2.2.0")
 ```
 
 then depend on the `Guard` product from your target:
@@ -53,25 +53,39 @@ then depend on the `Guard` product from your target:
 
 ## Password handling
 
-Starting with **v2.1.0** this fork sends passwords to the configured backend
-as plaintext over TLS. The original RSA-with-public-key client-side
-encryption (`Util.encryptPassword`, `Authing.DEFAULT_PUBLIC_KEY`,
-`Authing.getPublicKey()`) has been removed because the upstream Authing
-backend was the only consumer that knew how to decrypt that ciphertext.
+Passwords are encrypted client-side with **RSA-PKCS1 v1.5** before being
+sent to the backend, using `Authing.DEFAULT_PUBLIC_KEY`. The encryption is
+implemented natively via Apple's `Security.framework`
+(`SecKeyCreateEncryptedData(.rsaEncryptionPKCS1, …)`) — same algorithm,
+padding and wire format as the upstream Authing iOS SDK and as
+SwiftyAuthing's
+[`Encryption.swift`](https://github.com/jiananMars/SwiftyAuthing/blob/ff300b16c5a4b435f339817083bb95a32d702a7c/SwiftyAuthing/common/Encryption.swift),
+just without the third-party `SwCrypt` dependency.
 
-As a result, this SDK is **not** compatible with `core.authing.cn`'s
-password endpoints anymore — point it at a backend that accepts plaintext
-passwords over HTTPS (and does its own hashing / KDF server-side), or fork
-this repo and re-add the encryption helper.
+If you point the SDK at an on-premises Authing deployment with its own
+public key, override it via:
+
+```swift
+Authing.setOnPremiseInfo(host: "auth.example.com", publicKey: "<base64 RSA public key>")
+```
+
+`publicKey` is optional and defaults to `Authing.DEFAULT_PUBLIC_KEY`, so
+existing call sites that only pass `host:` keep working.
+
+> ⚠️ **`v2.1.0` is broken — do not use.** It removed `Util.encryptPassword`
+> and started sending plaintext passwords, which any Authing-compatible
+> backend rejects with `Failed to decrypt the password using the RSA
+> algorithm. Please check the request parameters.` Upgrade to `v2.2.0+`,
+> which restores the original encryption.
 
 ## Documentation
 
 [Click me for English documentation](https://docs.authing.cn/v2/en/reference/sdk-for-ios/)
 
-> Note: documentation that references UIKit components, the `AuthFlow`
-> screens, or client-side password encryption does **not** apply to this
-> fork. Only the headless network APIs are available, and password fields
-> are sent as plaintext over TLS.
+> Note: documentation that references UIKit components or the `AuthFlow`
+> screens does **not** apply to this fork. Only the headless network APIs
+> are available; password fields are encrypted with RSA-PKCS1 v1.5 before
+> transit, matching the upstream Authing wire format.
 
 ## Compatibility Notes
 - macOS 10.15+
