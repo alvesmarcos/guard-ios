@@ -37,7 +37,7 @@ project: https://github.com/Authing/guard-ios.
 Add the package to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/<your-fork>/guard-ios.git", from: "1.4.10")
+.package(url: "https://github.com/alvesmarcos/guard-ios.git", from: "2.0.0")
 ```
 
 then depend on the `Guard` product from your target:
