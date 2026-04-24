@@ -36,8 +36,7 @@ public class AuthClient: Client {
     }
 
     public func registerByEmail(authData: AuthRequest?, email: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let encryptedPassword = Util.encryptPassword(password)
-        let body: NSMutableDictionary = ["email": email, "password": encryptedPassword, "forceLogin": true]
+        let body: NSMutableDictionary = ["email": email, "password": password, "forceLogin": true]
         if context != nil {
             body.setValue(context, forKey: "context")
         }
@@ -79,8 +78,7 @@ public class AuthClient: Client {
     }
 
     public func registerByUserName(authData: AuthRequest?, username: String, password: String, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let encryptedPassword = Util.encryptPassword(password)
-        let body: NSMutableDictionary = ["username": username, "password": encryptedPassword, "forceLogin": true]
+        let body: NSMutableDictionary = ["username": username, "password": password, "forceLogin": true]
         if context != nil {
             body.setValue(context, forKey: "context")
         }
@@ -102,7 +100,7 @@ public class AuthClient: Client {
 
     public func registerByPhone(authData: AuthRequest?, phoneCountryCode: String? = nil, phone: String, password: String, _: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
         let body: NSMutableDictionary = ["account": phone,
-                                         "password": Util.encryptPassword(password)]
+                                         "password": password]
         if phoneCountryCode != nil {
             body.setValue(phoneCountryCode, forKey: "phoneCountryCode")
         }
@@ -125,7 +123,7 @@ public class AuthClient: Client {
     public func registerByPhoneCode(authData: AuthRequest?, phoneCountryCode: String? = nil, phone: String, code: String, password: String? = nil, _ context: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
         let body: NSMutableDictionary = ["phone": phone, "code": code, "forceLogin": true]
         if password != nil {
-            body.setValue(Util.encryptPassword(password!), forKey: "password")
+            body.setValue(password!, forKey: "password")
         }
         if phoneCountryCode != nil {
             body.setValue(phoneCountryCode, forKey: "phoneCountryCode")
@@ -151,7 +149,7 @@ public class AuthClient: Client {
 
     public func registerByExtendedFields(authData: AuthRequest?, extendedFields: String, account: String, password: String, _: Bool? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
         let body: NSMutableDictionary = ["account": account,
-                                         "password": Util.encryptPassword(password)]
+                                         "password": password]
 
         post("/api/v2/register-\(extendedFields)", body) { code, message, data in
             if authData == nil {
@@ -184,8 +182,7 @@ public class AuthClient: Client {
     }
 
     public func loginByAccount(authData: AuthRequest?, account: String, password: String, _ autoRegister: Bool = false, _ context: String? = nil, _ captchaCode: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let encryptedPassword = Util.encryptPassword(password)
-        let body: NSMutableDictionary = ["account": account, "password": encryptedPassword, "autoRegister": autoRegister]
+        let body: NSMutableDictionary = ["account": account, "password": password, "autoRegister": autoRegister]
         if context != nil {
             body.setValue(context, forKey: "context")
         }
@@ -363,24 +360,21 @@ public class AuthClient: Client {
     }
 
     public func resetPasswordByPhone(phone: String, code: String, newPassword: String, completion: @escaping (Int, String?) -> Void) {
-        let encryptedPassword = Util.encryptPassword(newPassword)
-        let body: NSDictionary = ["phone": phone, "code": code, "newPassword": encryptedPassword]
+        let body: NSDictionary = ["phone": phone, "code": code, "newPassword": newPassword]
         post("/api/v2/password/reset/sms", body) { code, message, _ in
             completion(code, message)
         }
     }
 
     public func resetPasswordByEmail(email: String, code: String, newPassword: String, completion: @escaping (Int, String?) -> Void) {
-        let encryptedPassword = Util.encryptPassword(newPassword)
-        let body: NSDictionary = ["email": email, "code": code, "newPassword": encryptedPassword]
+        let body: NSDictionary = ["email": email, "code": code, "newPassword": newPassword]
         post("/api/v2/password/reset/email", body) { code, message, _ in
             completion(code, message)
         }
     }
 
     public func resetPasswordByFirstTimeLoginToken(token: String, password: String, completion: @escaping (Int, String?) -> Void) {
-        let encryptedPassword = Util.encryptPassword(password)
-        let body: NSDictionary = ["token": token, "password": encryptedPassword]
+        let body: NSDictionary = ["token": token, "password": password]
         post("/api/v2/users/password/reset-by-first-login-token", body) { code, message, _ in
             completion(code, message)
         }
@@ -393,9 +387,9 @@ public class AuthClient: Client {
     }
 
     public func updatePassword(newPassword: String, oldPassword: String? = nil, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let body: NSMutableDictionary = ["newPassword": Util.encryptPassword(newPassword)]
+        let body: NSMutableDictionary = ["newPassword": newPassword]
         if oldPassword != nil {
-            body.setValue(Util.encryptPassword(oldPassword!), forKey: "oldPassword")
+            body.setValue(oldPassword!, forKey: "oldPassword")
         }
         post("/api/v2/password/update", body) { code, message, data in
             self.createUserInfo(code, message, data, completion: completion)
@@ -478,7 +472,7 @@ public class AuthClient: Client {
     public func listAuthorizedResources(namespace: String = "default", resourceType: String? = nil, completion: @escaping (Int, String?, NSArray?) -> Void) {
         let body: NSDictionary = ["namespace": namespace]
         if resourceType != nil {
-            body.setValue(Util.encryptPassword(resourceType!), forKey: "resourceType")
+            body.setValue(resourceType!, forKey: "resourceType")
         }
         post("/api/v2/users/resource/authorized", body) { code, message, data in
             if code == 200 {
@@ -490,9 +484,8 @@ public class AuthClient: Client {
     }
 
     public func checkPassword(password: String, completion: @escaping (Int, String?) -> Void) {
-        let cs = NSCharacterSet(charactersIn: "=+").inverted
-        let encryptedPassword = Util.encryptPassword(password).addingPercentEncoding(withAllowedCharacters: cs)!
-        get("/api/v2/users/password/check?password=\(encryptedPassword)") { code, message, _ in
+        let encoded = password.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? password
+        get("/api/v2/users/password/check?password=\(encoded)") { code, message, _ in
             completion(code, message)
         }
     }
@@ -1107,11 +1100,9 @@ public class AuthClient: Client {
     }
 
     public func bindWechatByAccount(account: String, password: String, key: String, completion: @escaping (Int, String?, UserInfo?) -> Void) {
-        let encryptedPassword = Util.encryptPassword(password)
-
         let body: NSDictionary = ["action": "bind-identity-by-password",
                                   "account": account,
-                                  "password": encryptedPassword,
+                                  "password": password,
                                   "key": key]
         post("/api/v2/ecConn/wechatMobile/byAccount", body) { code, message, data in
             if code == 200 {

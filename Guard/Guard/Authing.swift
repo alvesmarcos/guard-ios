@@ -10,9 +10,7 @@ import Foundation
 typealias ConfigCompletion = (Config?) -> Void
 
 public class Authing: NSObject {
-    
-    @objc public static let DEFAULT_PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4xKeUgQ+Aoz7TLfAfs9+paePb5KIofVthEopwrXFkp8OCeocaTHt9ICjTT2QeJh6cZaDaArfZ873GPUn00eOIZ7Ae+TiA2BKHbCvloW3w5Lnqm70iSsUi5Fmu9/2+68GZRH9L7Mlh8cFksCicW2Y2W2uMGKl64GDcIq3au+aqJQIDAQAB"
-    
+
     public typealias AuthCompletion = (Int, String?, UserInfo?) -> Void
     
     @objc public static var sConfig: Config? = nil
@@ -38,7 +36,6 @@ public class Authing: NSObject {
     private static var pushClientId: String?
     private static var sAppId = ""
     private static var isOnPremises = false
-    private static var sPublicKey = DEFAULT_PUBLIC_KEY
     private static var sCurrentUser: UserInfo?
     
     @objc public static func start(_ appid: String) {
@@ -70,11 +67,7 @@ public class Authing: NSObject {
     @objc public static func getIsOnPremises() -> Bool {
         return isOnPremises
     }
-    
-    @objc public static func getPublicKey() -> String {
-        return sPublicKey
-    }
-    
+
     @objc public static func setPushClientId(cid: String?) {
         pushClientId = cid
     }
@@ -91,10 +84,9 @@ public class Authing: NSObject {
         return sWebsocketHost
     }
     
-    @objc public static func setOnPremiseInfo(host: String, publicKey: String) {
+    @objc public static func setOnPremiseInfo(host: String) {
         isOnPremises = true
         sHost = host
-        sPublicKey = publicKey
     }
     
     @objc public static func setDebugMode(open: Bool) {
